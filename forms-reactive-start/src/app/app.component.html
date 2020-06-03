@@ -12,7 +12,10 @@
               class="form-control">
               <span
               *ngIf="!signUpForm.get('userData.username').valid && signUpForm.get('userData.username').touched"
-              class="help-block">Please write username!</span>
+              class="help-block">
+              <span *ngIf="signUpForm.get('userData.username').errors['nameIsForbidden']">This name is invalid!</span>
+              <span *ngIf="signUpForm.get('userData.username').errors['required']">This field is required!</span>
+              </span>
           </div>
           <div class="form-group">
             <label for="email">email</label>
@@ -23,7 +26,10 @@
               class="form-control">
               <span
               *ngIf="!signUpForm.get('userData.email').valid && signUpForm.get('userData.email').touched"
-              class="help-block">Please write email!</span>
+              class="help-block">
+              <!-- <span *ngIf="signUpForm.get('userData.email').errors['emailIsForbidden']">This email is invalid!</span>
+              <span *ngIf="signUpForm.get('userData.email').errors['required']">This field is required!</span> -->
+              email</span>
           </div>
         </div>
         <div class="radio" *ngFor="let gender of genders">
@@ -42,6 +48,7 @@
             class="form-group"
             type="text" name="hobby" *ngFor="let hobbyControl of getControls(); let i = index">
             <input type="text" class="form-control" [formControlName]="i">
+          <!-- <p>{{ hobbyControl.value }}</p> -->
           </div>
         </div>
         <span
