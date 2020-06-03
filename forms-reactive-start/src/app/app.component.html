@@ -27,9 +27,10 @@
               <span
               *ngIf="!signUpForm.get('userData.email').valid && signUpForm.get('userData.email').touched"
               class="help-block">
-              <!-- <span *ngIf="signUpForm.get('userData.email').errors['emailIsForbidden']">This email is invalid!</span>
-              <span *ngIf="signUpForm.get('userData.email').errors['required']">This field is required!</span> -->
-              email</span>
+              <span *ngIf="emailControl.hasError('emailIsForbidden')">This email is invalid!</span>
+              <span *ngIf="emailControl.hasError('required')">This filed is required!</span>
+
+              </span>
           </div>
         </div>
         <div class="radio" *ngFor="let gender of genders">

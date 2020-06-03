@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 
@@ -13,7 +13,7 @@ export class AppComponent implements OnInit{
   signUpForm: FormGroup;
   forbiddenUsernames = ['Chris', 'Anna'];
 
-  ngOnInit() {
+  constructor() {
     this.signUpForm = new FormGroup({
       'userData': new FormGroup({
         'username': new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
@@ -22,12 +22,16 @@ export class AppComponent implements OnInit{
       'gender': new FormControl('male'),
       'hobbies': new FormArray([])
     });
-    this.signUpForm.valueChanges.subscribe(
-      (value) => console.log(value)
-    );
-    this.signUpForm.statusChanges.subscribe(
-      (status) => console.log(status)
-    );
+  }
+
+  ngOnInit() {
+    // console.log(this.signUpForm.get('userData.email'));
+    // this.signUpForm.valueChanges.subscribe(
+    //   (value) => console.log(value)
+    // );
+    // this.signUpForm.statusChanges.subscribe(
+    //   (status) => console.log(status)
+    // );
     this.signUpForm.setValue({
       'userData': {
         'username': 'Max',
@@ -41,6 +45,7 @@ export class AppComponent implements OnInit{
         'username': 'Max',
       }
     });
+
   }
 
   onSubmit() {
@@ -76,5 +81,8 @@ export class AppComponent implements OnInit{
       }, 1500);
     });
     return promise;
+  }
+  get emailControl(): AbstractControl {
+    return this.signUpForm.get('userData.email');
   }
 }
