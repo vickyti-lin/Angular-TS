@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +15,8 @@ export class AppComponent {
   constructor(private formBuilder: FormBuilder) {
     this.signUpForm = this.formBuilder.group({
       username: ['', [Validators.required, this.forbiddenNames.bind(this)]],
-      email: ['', [Validators.required, Validators.email]],
-      status: ['']
+      email: ['', [Validators.required, Validators.email], this.forbiddenEmails],
+      status: ['Critical']
     });
   }
 
@@ -31,10 +32,23 @@ export class AppComponent {
   }
 
   forbiddenNames(control: FormControl): {[s: string]: boolean} {
-    if (this.forbiddenUsername.indexOf(control.value) !== -1) {
+    if (control.value === 'Test') {
       return {'nameIsForbidden': true};
     }
     return null;
+  }
+
+  forbiddenEmails(control: FormControl): Promise<any> | Observable<any> {
+    const promise = new Promise<any>((resolve, reject) => {
+      setTimeout(() => {
+        if (control.value === 'test@test.com') {
+          resolve({'emailIsForbidden': true});
+        } else {
+          resolve(null);
+        }
+      }, 1500);
+    });
+    return promise;
   }
 }
 
